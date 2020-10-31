@@ -6,6 +6,7 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [userIngredients, setUserIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     console.log('RENDERING INGREDIENTS', userIngredients);
@@ -16,12 +17,14 @@ const Ingredients = () => {
   }, []);
 
   const addIngredientHandler = ingredient => {
+    setIsLoading(true);
     fetch('http://localhost:3000/ingredients', {
       method: 'POST',
       body: JSON.stringify(ingredient),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
+        setIsLoading(false);
         return response.json();
       })
       .then(responseData => {
@@ -33,14 +36,24 @@ const Ingredients = () => {
   };
 
   const removeIngredientHandler = ingredientId => {
-    setUserIngredients(prevIngredients =>
-      prevIngredients.filter(ingredient => ingredient.id !== ingredientId)
-    );
+    setIsLoading(true);
+    const ingToRemove = userIngredients.find(ingredient => ingredient.id === ingredientId);
+    fetch(`http://localhost:3000/ingredients/${ingToRemove.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(_response => {
+      setIsLoading(false);
+      setUserIngredients(prevIngredients =>
+        prevIngredients.filter(ingredient => ingredient.id !== ingredientId)
+      );
+    })
   };
 
   return (
     <div className="App">
-      <IngredientForm onAddIngredient={addIngredientHandler} />
+      <IngredientForm onAddIngredient={addIngredientHandler} isLoading={isLoading}/>
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />

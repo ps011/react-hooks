@@ -23,7 +23,7 @@ const Search = React.memo(props => {
             const loadedIngredients = [];
             for (const key in responseData) {
               loadedIngredients.push({
-                id: key,
+                id: responseData[key].id,
                 title: responseData[key].title,
                 amount: responseData[key].amount
               });
