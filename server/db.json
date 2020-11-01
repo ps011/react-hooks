@@ -1,18 +1,13 @@
 {
   "ingredients": [
     {
-      "title": "Oranges",
-      "amount": "2",
-      "id": 2
-    },
-    {
       "title": "Bananas",
       "amount": "0",
       "id": 3
     },
     {
-      "title": "Apples",
-      "amount": "9",
+      "title": "Chocolate",
+      "amount": "4",
       "id": 4
     }
   ]
